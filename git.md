@@ -3,15 +3,15 @@ git基本操作
 1）下载并安装git
 
 2）配置git：用户名和邮箱
-git config --global user.name "lijiang"
-git config --global user.email "13910236181@139.com"
+git config --global user.name "用户名"
+git config --global user.email "邮箱地址"
 
 3）搭建git服务器（远程仓库）
 为了在本地和远程仓库之间进行 免密钥登录，可以配置ssh。
 配置ssh:先在本地配置，再发送给远程
 先查看是否有.ssh文件，输入命令：cd ~/.ssh
 出现no such file or directory表示没有.ssh文件
-ssh-keygen -t rsa -C "13910236181@139.COM"  特别注意大小写和空格，用大写的C ！！！三次回车后，就生成了本地ssh了
+ssh-keygen -t rsa -C "邮箱地址"  特别注意大小写和空格，用大写的C ！！！三次回车后，就生成了本地ssh了
 发送给远程：
 打开：https://github.com/settings/keys
 测试连通性，看本地仓库和远程仓库是否连接成功，输入命令：ssh -T git@github.com
