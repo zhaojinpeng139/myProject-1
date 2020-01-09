@@ -1,0 +1,25 @@
+AdBlock			拦截网页上的广告
+Charset			修改网站的默认编码
+ColorZilla 		提取网页色彩
+Enable Copy		复制插件
+Google 翻译		翻译
+Hoxx VPN Proxy	翻墙软件
+Imagus			鼠标悬停在缩略图上就出现大图
+OneTab			减轻标签页混乱现象
+Page Ruler		屏幕尺子插件
+Proxy SwitchyOmega	管理和切换多个代理设置。
+React Developer Tools	React
+Tampermonkey BETA	用户脚本管理器
+Video Downloader professional	专业的视频下载器
+Viewport Resizer	测试响应式布局
+右键搜			扩展右键菜单
+ImageAssistant	网页图片批量下载等功能
+FireShot		捕捉网页截图
+网页截图:注释&录屏
+
+
+
+
+
+
+
