@@ -23,10 +23,14 @@ yum update
 
 安装扩展
 yum install -y gcc gcc-c++ pcre pcre-devel openssl openssl-devel zlib zlib-devel
+5.9->6
+curl http://download.bt.cn/install/update_to_6.sh|bash
 
 宝塔
 yum install -y wget && wget -O install.sh http://download.bt.cn/install/install.sh && sh install.sh
 
+宝塔6
+yum install -y wget && wget -O install.sh http://download.bt.cn/install/install_6.0.sh && sh install.sh
 
 ---------------------------------------------------------------------------------------------------
 安装Shadowsocks
