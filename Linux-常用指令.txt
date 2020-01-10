@@ -203,8 +203,18 @@
                 100c----> 字节    == 100字节
                 100k----> 千字节  == 100*1024字节
                 100M----> 兆      == 100*1024*1024字节
-        
 
-		
+				
+				
+18. linux 批量设置文件夹755 文件644权限
+首先CD到你要修改的网站目录，然后运行如下两个命令即可快速批量修改权限。
+
+find -type d|xargs chmod 755
+find -type f|xargs chmod 644
+
+另外经常用sftp修改上传新文件后是root用户组，可以修改成www用户组，命令如下:
+chown -R www:www /home/wwwroot/网站目录
+
+批量修改 文件夹权限
 chmod 644 -R ./
 find ./ -type d -print|xargs chmod 755;
