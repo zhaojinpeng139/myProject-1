@@ -1,0 +1,423 @@
+#tinyint : 0-255
+#smallint : 0-65535
+#mediumint : 0-16777215
+#int ： 40多亿
+#char: 0-255字符
+#varchar : 0-65535 字节
+#text : 0-65535字符
+
+alter table table_name AUTO_INCREMENT=n
+
+//中文排序
+convert(classname USING gbk) asc
+
+update ywy_admin set password = md5('nnwhko1234fdsa#@90#_jl329$9lfds!129')  where id=1;
+
+select md5('nnwhko');----查询md5之后的字符串
+
+
+--删除某一行字段
+alter table shop_goods drop goods_order;
+
+create database dbname charset utf8;	//创建数据库
+
+use php39;	//选择数据库
+
+set names gbk;	//设置字符集
+
+drop table if exists p39_goods;		//如果存在p39_goods数据表就删除
+
+//创建数据表
+create table p39_goods(		
+	id mediumint unsigned not null auto_increment comment 'Id',
+	goods_name varchar(150) not null comment '商品名称',
+	market_price decimal(10,2) not null comment '市场价',
+	shop_price decimal(10,2) not null comment '本店价',
+	goods_desc longtext comment '商品描述',
+	is_on_sale enum('是','否') not null default '是' comment '是否上架',
+	is_delete enum('是','否') not null default '否' comment '是否放入回收站',
+	addtime datetime not null comment '添加时间',
+	logo varchar(150) not null default '' comment '原图',
+	sm_logo varchar(150) not null default '' comment '小图',
+	mid_logo varchar(150) not null default '' comment '中图',
+	big_logo varchar(150) not null default '' comment '大图',
+	mbig_logo varchar(150) not null default '' comment '更大图',
+	primary key (id),
+	key shop_price(shop_price),
+	key addtime(addtime),
+	key is_on_sale(is_on_sale)
+)engine=InnoDB default charset=utf8 comment '商品';
+
+================================================================================================
+
+查询数据表
+
+select * from p39_goods \G
+
+================================================================================================
+
+清空数据表
+
+TRUNCATE tablename
+
+================================================================================================
+
+为数据表添加新字段
+
+alter table p39_goods add logo varchar(150) not null default '' comment '原图';
+alter table p39_goods add logo varchar(150) not null default '' comment '原图';
+
+================================================================================================
+
+数据库导出：
+
+mysqldump -u root -p dbname > e:位置.sql
+
+创建数据库
+create database dbname charset utf8;
+
+数据库导入
+
+mysql -u root -p newsdbname < dbname的位置
+
+
+================================================================================================
+
+--蠕虫复制
+insert into ajax_article(title,smalltext,cid) select title,smalltext,cid from ajax_article; 
+
+
+================================================================================================
+
+更新字段的值
+ update shop_order set pay_status = '否'  where id=3;
+
+================================================================================================
+
+//多表查询
+
+select a.*,b.brand_name from p39_goods a left join p39_brand b on a.brand_id=b.id
+
+
+//读取某一页数据,链表查询
+		$data = $this->order("$orderby $orderway")
+		->field('a.*,b.brand_name')
+		->alias('a')
+		->join('LEFT JOIN __BRAND__ b ON a.brand_id=b.id')
+		->where($where)
+		->limit($page->firstRow.','.$page->listRows)
+		->select();
+
+
+
+================================================================================================
+
+查询某个值在不在这个字段里面(全表扫描，无法优化)----慎用
+
+
+select * from table_name where find_in_set(值,字段);
+
+select * from table_name where 条件 and find_in_set(值,字段);
+================================================================================================
+
+
+压力测试
+
+ab.exe -c 10 -n 10 文件 
+-----------------------------
+
+mysql锁表
+
+lock table tablename 1 read|write, tablename 2 read|write...
+
+read：共享锁
+write：排它锁，
+
+释放锁：
+unlock tables;
+
+------------------------------
+
+//打开锁文件
+$fp = fopen('./a.lock'，'r');
+//开启锁
+flock($fp,LOCK_EX);	----拍它锁
+
+flock($fp,LOCK_SH);
+
+执行内容
+//关闭锁
+
+flock($fp,LOCK_UN);	---释放锁
+
+================================================================================================
+
+###修改新字段
+
+alter table tableName modify 字段 varchar(50) not null comment '字段注释',
+
+
+================================================================================================
+select a.*,b.pic from bhtc_ht a left join bhtc_ht_pics b on a.id=b.ht_id;
+
+
+================================================================================================
+
+create database shop charset utf8;
+
+use shop;
+
+set names gbk;
+
+--商品表
+create table if not exists shop_goods(
+	id mediumint unsigned not null auto_increment comment 'ID',
+	goods_name varchar(150) not null comment '商品名称',
+	shop_price decimal(10,2) not null comment '本店价',
+	market_price decimal(10,2) not null comment '市场价',
+	goods_desc text comment '商品描述',
+	is_on_sale enum('是','否') not null default '是' comment '是否上架',
+	is_delete enum('是','否') not null default '是' comment '是否放入回收站',
+	addtime datetime not null comment '添加时间',
+	logo varchar(200) not null default '' comment '原图',
+	sm_logo varchar(200) not null default '' comment '小图',
+	mid_logo varchar(200) not null default '' comment '中图',
+	big_logo varchar(200) not null default '' comment '大图',
+	mbig_logo varchar(200) not null default '' comment '更大图',
+	brand_id mediumint unsigned not null comment '品牌id',
+	primary key(id),
+	key shop_price(shop_price),
+	key addtime(addtime),
+	key is_on_sale(is_on_sale),
+	key brand_id(brand_id)
+)engine=InnoDB default charset utf8 comment '商品表';
+
+
+alter table shop_goods add logo varchar(200) not null default '' comment '原图';
+alter table shop_goods add sm_logo varchar(200) not null default '' comment '小图';
+alter table shop_goods add mid_logo varchar(200) not null default '' comment '中图';
+alter table shop_goods add big_logo varchar(200) not null default '' comment '大图';
+alter table shop_goods add mbig_logo varchar(200) not null default '' comment '更大图';
+
+
+--品牌表
+create table shop_brand(
+	id mediumint unsigned not null primary key auto_increment comment 'id',
+	brand_name varchar(60) not null comment '品牌名称',
+	brand_url varchar(180) not null default '' comment '官方网站',
+	logo varchar(180) not null default '' comment '品牌Logo'
+)engine=InnoDB default charset=utf8 comment '品牌';
+
+
+--会员级别表
+create table shop_member_level(
+	id mediumint unsigned not null primary key auto_increment comment 'id',
+	level_name varchar(60) not null comment '级别名称',
+	jifen_bottom mediumint unsigned not null comment '积分下限',
+	jifen_top mediumint unsigned not null comment '积分上限'
+)engine=InnoDB default charset=utf8 comment '会员级别';
+
+
+--会员价格表
+create table shop_member_price(
+	price decimal(10,2) not null comment '会员价格',
+	level_id mediumint unsigned not null comment '级别Id',
+	goods_id mediumint unsigned not null comment '商品id',
+	key level_id(level_id),
+	key goods_id(goods_id)
+)engine=InnoDB default charset=utf8 comment '会员价格';
+
+
+--图片集
+create table shop_goods_pics(
+	id mediumint unsigned not null auto_increment comment 'Id',
+	pic varchar(150) not null comment '原图',
+	sm_pic varchar(150) not null comment '小图',
+	mid_pic varchar(150) not null comment '中图',
+	big_pic varchar(150) not null comment '大图',
+	goods_id mediumint unsigned not null comment '商品Id',
+	primary key (id),
+	key goods_id(goods_id)
+)engine=InnoDB default charset=utf8 comment '商品相册';
+
+
+--InnoDB引擎mysql自带外键删除
+foreign key (goods_id) references shop_goods(id) on delete cascade,
+
+
+
+================================================================================================
+
+
+
+链表查询
+
+$data['data'] = $this->alias('a')->field('a.*,b.brand_name,c.cate_name,group_concat(e.cate_name separator "<br />") ext_cate_name')->join('left join __BRAND__ b on a.brand_id=b.id left join __CATEGORY__ c on a.cate_id=c.id left join __GOODS_CATEGORY__ d on a.id=d.goods_id left join __CATEGORY__ e on d.cate_id=e.id')->where($where)->group('a.id')->limit($page->firstRow.','.$page->listRows)->select();
+
+================================================================================================
+
+create table if not exists php1_brand(
+	id mediumint unsigned not null primary key auto_increment comment 'Id',
+	brand_name varchar(50) not null comment '品牌名字',
+	brand_url varchar(200) not null default '' comment '品牌网址',
+	brand_logo varchar(200) not null default '' comment '品牌logo'
+)engine=InnoDB default charset=utf8 comment '品牌表';
+
+链表查询方式：
+
+①select * from php1_goods a,php1_brand b where a.brand_id=b.id \G
+
+②select a.*,b.brand_name from php1_goods a left join php1_brand b on a.brand_id=b.id \G
+
+③$data = $this->field('a.*,b.brand_name')->alias('a')->join('left join php1_brand b on a.brand_id=b.id')->where($where)->limit($page->firstRow.','.$page->listRows)->select();
+
+================================================================================================
+
+
+
+foreach($data as $k => $v){
+			$data[$k]['existsnum'] = M('Yuyue') ->where(array('course_id'=>array('eq',$v['id']))) ->count();
+		}
+
+
+更新字段的字段中的某个部分
+update `bzwz_goods` set `goods_name` = replace(`goods_name`,'&amp;nbsp;','') where 条件;
+
+update bzwz_goods set goods_name = replace(goods_name,'&ampbsp;','');
+
+修改表明
+alter table table_name rename table_new_name;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+================================================================================================
+
+
+
+
+
+
+
